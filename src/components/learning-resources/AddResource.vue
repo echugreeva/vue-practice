@@ -1,4 +1,13 @@
 <template>
+    <base-dialog v-if="inputIsInvalid" title="Invalid Input" @close="confirmError">
+        <template #default>
+            <p>unfortunately blablah</p>
+        </template>
+        <template #actions>
+            <base-button @click="confirmError">Ok</base-button>
+        </template>
+    </base-dialog>
+        
     <base-card>
         <form @submit.prevent="submitData">
             <div class='form-control'>
@@ -22,14 +31,30 @@
 </template>
 
 <script>
+
 export default {
+ 
     inject:['addResFunc'],
-    method: {
+    data () {
+        return {
+            inputIsInvalid: false,
+        }
+    },
+    methods: {
         submitData() {
+            console.log(this.$refs.titleInput.value)
             const enteredTitle = this.$refs.titleInput.value
             const enteredDesc = this.$refs.descInput.value
             const enteredLink = this.$refs.linkInput.value
+
+            if(enteredTitle.trim()=== '' || enteredDesc.trim() ==='' ) {
+                this.inputIsInvalid = true
+                return;
+            }
             this.addResFunc(enteredTitle,enteredDesc,enteredLink)
+        },
+        confirmError () {
+            this.inputIsInvalid = false
         }
         
     }

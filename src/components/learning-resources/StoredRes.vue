@@ -1,6 +1,7 @@
 <template>
     <ul>
         <resource-item v-for="res in resources" 
+        :id="res.id" 
         :key="res.id" 
         :title ="res.title"
         :description="res.description"
